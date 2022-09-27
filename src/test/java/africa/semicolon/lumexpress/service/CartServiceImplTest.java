@@ -19,10 +19,10 @@ class CartServiceImplTest {
     void setUp() {
     }
 
-    @Test
-    @DisplayName("Test that cart can be created")
-    void create() {
-        Cart cart = cartService.create();
-        assertThat(cart).isNotNull();
-    }
+//    @Test
+//    @DisplayName("Test that cart can be created")
+//    void create() {
+//        Cart cart = cartService.create();
+//        assertThat(cart).isNotNull();
+//    }
 }

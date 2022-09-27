@@ -34,11 +34,10 @@ class CustomerServiceImplTest {
     @Test
     void register() {
         CustomerRegisterResponse customerRegisterResponse = customerService.register(registerRequest);
-        assertEquals(200, customerRegisterResponse.getCode());
         assertThat(customerRegisterResponse).isNotNull();
         assertThat(customerRegisterResponse.getMessage()).isNotNull();
         assertThat(customerRegisterResponse.getUserId()).isGreaterThan(0);
-        assertThat(customerRegisterResponse.getCode()).isEqualTo(200);
+        assertThat(customerRegisterResponse.getCode()).isEqualTo(201);
     }
 
     @Test
