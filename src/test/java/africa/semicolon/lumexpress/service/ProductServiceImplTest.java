@@ -2,11 +2,14 @@ package africa.semicolon.lumexpress.service;
 
 import africa.semicolon.lumexpress.data.dtos.request.CreateProductRequest;
 import africa.semicolon.lumexpress.data.dtos.response.CreateProductResponse;
+import africa.semicolon.lumexpress.data.models.Product;
+import africa.semicolon.lumexpress.exception.ProductNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,11 +38,12 @@ class ProductServiceImplTest {
                 .price(BigDecimal.valueOf(30.00))
                 .productCategory("Beverages")
                 .quantity(10)
+                .imageUrl(file)
                 .build();
     }
 
     @Test
-    void create() {
+    void createTest() throws IOException {
        CreateProductResponse createProductResponse = productService.create(createProductRequest);
        assertThat(createProductResponse).isNotNull();
        assertThat(createProductResponse.getProductId()).isGreaterThan(0L);
@@ -48,15 +52,23 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void updateProductDetails() {
+    void updateProductDetailsTest() {
     }
 
     @Test
-    void getProductById() {
+    void getProductByIdTest() throws IOException, ProductNotFoundException {
+        CreateProductResponse createProductResponse = productService.create(createProductRequest);
+        Product foundProduct = productService.getProductById(createProductResponse.getProductId());
+        assertThat(foundProduct).isNotNull();
+        assertThat(foundProduct.getId()).isEqualTo(createProductResponse.getProductId());
+
     }
 
     @Test
-    void getAllProduct() {
+    void getAllProductTest() {
+        Page<Product> productsPage = productService.getAllProduct();
+        assertThat(productsPage).isNotNull();
+        assertThat(productsPage.getTotalElements()).isGreaterThan(0);
     }
 
     @Test

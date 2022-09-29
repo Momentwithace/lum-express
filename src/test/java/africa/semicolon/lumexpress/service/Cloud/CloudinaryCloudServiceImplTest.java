@@ -1,5 +1,6 @@
 package africa.semicolon.lumexpress.service.Cloud;
 
+import com.cloudinary.utils.ObjectUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ class CloudinaryCloudServiceImplTest {
     @DisplayName("Cloudinary upload test")
     void upload() {
         try {
-           String response = cloudService.upload(file.getBytes(), null);
+           String response = cloudService.upload(file.getBytes(), ObjectUtils.emptyMap());
            assertThat(response).isNotNull();
         } catch (IOException e) {
             e.printStackTrace();
