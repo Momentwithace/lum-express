@@ -18,8 +18,9 @@ import java.util.List;
 //@NoArgsConstructor
 @Builder
 public class ProductServiceImpl implements ProductService{
+
     private final ProductRepository productRepository;
-    private final ModelMapper modelMapper;
+    private final ModelMapper modelMapper = new ModelMapper();
     @Override
     public CreateProductResponse create(CreateProductRequest createProductRequest) {
         Product product = modelMapper.map(createProductRequest, Product.class);
