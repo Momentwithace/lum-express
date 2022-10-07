@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,7 +21,7 @@ public class Product {
     private String name;
     private BigDecimal price;
     private int quantity;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Category> category = new ArrayList<>();
     private String imageUrl;
 

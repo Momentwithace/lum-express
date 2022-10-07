@@ -1,4 +1,12 @@
 package africa.semicolon.lumexpress.service;
 
-public class NotificationServiceImpl {
+import africa.semicolon.lumexpress.data.dtos.request.NotificationRequest;
+import org.springframework.stereotype.Service;
+
+@Service
+public class NotificationServiceImpl implements NotificationService{
+    @Override
+    public String send(NotificationRequest notificationRequest) {
+        return null;
+    }
 }

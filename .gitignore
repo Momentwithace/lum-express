@@ -34,4 +34,5 @@ build/
 .mvm/
 mvnw
 mvnm.cmd
+application.properties
 
