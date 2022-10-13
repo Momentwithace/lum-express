@@ -1,9 +1,15 @@
 package africa.semicolon.lumexpress.data.models;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -16,5 +22,9 @@ public class LumExpressUser {
     private String password;
     private String phoneNumber;
     private String imageUrl;
+    private boolean isEnabled;
+    @OneToMany
+    @Cascade(CascadeType.ALL)
+    private List<Notification> message = new ArrayList<>();
 
 }

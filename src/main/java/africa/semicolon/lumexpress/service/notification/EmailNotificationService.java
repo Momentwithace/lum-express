@@ -1,5 +1,7 @@
 package africa.semicolon.lumexpress.service.notification;
 
-public interface EmailSender {
-    String sendHtmlMail(EmailDetails emailDetails);
+import africa.semicolon.lumexpress.data.dtos.request.EmailNotificationRequest;
+
+public interface EmailNotificationService {
+    String sendHtmlMail(EmailNotificationRequest emailDetails);
 }

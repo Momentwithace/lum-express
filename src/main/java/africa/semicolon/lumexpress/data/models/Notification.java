@@ -1,4 +1,4 @@
-package africa.semicolon.lumexpress.service.notification;
+package africa.semicolon.lumexpress.data.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

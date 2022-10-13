@@ -1,2 +1,4 @@
-package africa.semicolon.lumexpress.service.notification;public interface LumExpressNotificationService {
+package africa.semicolon.lumexpress.service.notification;
+
+public interface LumExpressNotificationService {
 }
