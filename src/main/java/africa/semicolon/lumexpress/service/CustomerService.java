@@ -9,6 +9,6 @@ import africa.semicolon.lumexpress.data.dtos.response.RegisterResponse;
 public interface CustomerService {
     RegisterResponse register(CustomerRegisterRequest customerRegisterRequest);
 
-    String completeProfile(UpdateCustomerDetails updateCustomerDetails);
+    String updateCustomerProfile(UpdateCustomerDetails updateCustomerDetails);
 
 }

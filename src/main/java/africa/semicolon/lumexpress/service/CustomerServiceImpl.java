@@ -9,6 +9,7 @@ import africa.semicolon.lumexpress.data.models.Cart;
 import africa.semicolon.lumexpress.data.models.Customer;
 import africa.semicolon.lumexpress.data.models.VerificationToken;
 import africa.semicolon.lumexpress.data.repository.CustomerRepository;
+import africa.semicolon.lumexpress.exception.UserNotFoundException;
 import africa.semicolon.lumexpress.service.notification.EmailNotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,7 +65,8 @@ public class CustomerServiceImpl implements CustomerService{
         var email = getEmailTemplate();
         String mail = null;
         if(email != null){
-            mail = String.format(email, verificationToken.getUserEmail(), "http://localhost:8080/api/v1/customer/verify/" + verificationToken.getToken());
+            mail = String.format(email,customerName, "http://localhost:8080/api/v1/customer/verify/"
+                    + verificationToken.getToken());
         }
        return EmailNotificationRequest.builder()
                 .userEmail(verificationToken.getUserEmail())
@@ -81,7 +85,28 @@ public class CustomerServiceImpl implements CustomerService{
 
 
     @Override
-    public String completeProfile(UpdateCustomerDetails updateCustomerDetails) {
-        return null;
+    public String updateCustomerProfile(UpdateCustomerDetails updateCustomerDetails) {
+        Customer customerToUpdate = customerRepository.findById(updateCustomerDetails.getCustomerId()).
+                orElseThrow(()->new UserNotFoundException(String.format("Customer with %s Not Found",
+                        updateCustomerDetails.getCustomerId())));
+        mapper.map(updateCustomerDetails, customerToUpdate);
+        Set<Address> customerAddressList = customerToUpdate.getAddress();
+        Optional<Address> foundAddress = customerAddressList.stream().findFirst();
+        if(foundAddress.isPresent()) applyAddressUpdate(foundAddress.get(), updateCustomerDetails);
+        customerToUpdate.getAddress().add(foundAddress.get());
+        Customer updatedCustomer = customerRepository.save(customerToUpdate);
+        log.info("before update->{}", updatedCustomer);
+
+        return String.format("%s Details updated successfully", updatedCustomer.getFirstName());
     }
+
+    private void applyAddressUpdate(Address address, UpdateCustomerDetails updateCustomerDetails) {
+        address.setBuildingNumber(updateCustomerDetails.getBuildingNumber());
+        address.setState(updateCustomerDetails.getState());
+        address.setCity(updateCustomerDetails.getCity());
+        address.setStreet(updateCustomerDetails.getStreet());
+
+    }
+
+
 }

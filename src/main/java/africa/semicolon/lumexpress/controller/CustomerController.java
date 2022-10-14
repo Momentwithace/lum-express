@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/customer")
@@ -18,7 +20,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PostMapping()
-    public ResponseEntity<?> register(@RequestBody CustomerRegisterRequest request){
+    public ResponseEntity<?> register(@Valid @RequestBody CustomerRegisterRequest request){
         return ResponseEntity.status(HttpStatus.CREATED).body(customerService.register(request));
     }
 }
