@@ -8,6 +8,7 @@ import africa.semicolon.lumexpress.data.dtos.response.UpdateProductResponse;
 import africa.semicolon.lumexpress.data.models.Product;
 import africa.semicolon.lumexpress.exception.ProductNotFoundException;
 import com.github.fge.jsonpatch.JsonPatch;
+import org.springframework.boot.BootstrapContext;
 import org.springframework.data.domain.Page;
 
 import java.io.IOException;
@@ -20,4 +21,6 @@ public interface ProductService {
     Page<Product> getAllProduct(GetAllItemsRequest getAllItemsRequest);
 
     void deleteProduct(Long id);
+
+    List<Product> getAll();
 }

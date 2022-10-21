@@ -17,6 +17,7 @@ class CartServiceImplTest {
 
     @Autowired
     private CartService cartService;
+    @Autowired
     private ProductService  productService;
 
     @BeforeEach
@@ -26,12 +27,8 @@ class CartServiceImplTest {
     @Test
     void addProductToCartTest(){
         CartRequest cartRequest = CartRequest.builder()
-                .cartId(cartService.getCartList()
-                        .get(cartService.getCartList().size()-1)
-                        .getId())
-                .productId(productService.getAllProduct(new GetAllItemsRequest(10, 1))
-                        .getContent().get(productService.getAllProduct(new GetAllItemsRequest ())
-                                        .getNumberOfElements()-1).getId())
+                .cartId(cartService.getCartList().get(0).getId())
+                .productId(productService.getAll().get(0).getId())
                 .build();
         CartResponse cartResponse = cartService.addProductToCart(cartRequest);
         assertThat(cartResponse).isNotNull();

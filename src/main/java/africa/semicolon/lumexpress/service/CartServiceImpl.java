@@ -23,7 +23,7 @@ public class CartServiceImpl implements CartService{
         Cart cart = cartRepository.findById(cartRequest.getCartId())
                 .orElseThrow(()->new CartNotFoundException(
                         String.format("Cart with id %s not found", cartRequest.getCartId())));
-        Product foundProduct = productService.getProductById(cartRequest.getCartId());
+        Product foundProduct = productService.getProductById(cartRequest.getProductId());
         Item item =  buildCartItem(foundProduct);
         cart.getItems().add(item);
         Cart cartToSave = updateCartSubTotal(cart);

@@ -1,20 +1,25 @@
 package africa.semicolon.lumexpress.data.models;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+
+import javax.persistence.ElementCollection;
+import javax.persistence.FetchType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
 @Setter
 @MappedSuperclass
+@AllArgsConstructor
+@NoArgsConstructor
 public class LumExpressUser {
     private String firstName;
     private String lastName;
@@ -26,5 +31,7 @@ public class LumExpressUser {
     @OneToMany
     @Cascade(CascadeType.ALL)
     private List<Notification> message = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
 
 }

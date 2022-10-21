@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Getter
 @Service
@@ -106,5 +107,10 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void deleteProduct(Long id) {
 
+    }
+
+    @Override
+    public List<Product> getAll() {
+        return productRepository.findAll();
     }
 }

@@ -14,11 +14,13 @@ import africa.semicolon.lumexpress.service.notification.EmailNotificationService
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,6 +32,7 @@ public class CustomerServiceImpl implements CustomerService{
     private final CustomerRepository customerRepository;
     private final ModelMapper mapper = new ModelMapper();
 
+    private final PasswordEncoder passwordEncoder;
     private final EmailNotificationService emailNotificationService;
 
     private final VerificationTokenService verificationTokenService;
@@ -39,6 +42,8 @@ public class CustomerServiceImpl implements CustomerService{
         Customer customer = mapper.map(customerRegisterRequest, Customer.class);
         customer.setCart(new Cart());
         setCustomerAddress(customerRegisterRequest, customer);
+        String encodedPassword = passwordEncoder.encode(customer.getPassword());
+        customer.setPassword(encodedPassword);
         Customer savedCustomer = customerRepository.save(customer);
         var token = verificationTokenService.createToken(savedCustomer.getEmail());
         emailNotificationService.sendHtmlMail(buildEmailNotificationRequest(token, savedCustomer.getFirstName()));
@@ -47,7 +52,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     private String getEmailTemplate(){
         try(BufferedReader bufferedReader =
-                    new BufferedReader(new FileReader("/home/ace/Downloads/spring boot files/lum-express/src/main/resources/welcome.txt"))) {
+                    new BufferedReader(new FileReader("/home/unlikeace/IdeaProjects/lum-express/src/main/resources/welcome.txt"))) {
             return bufferedReader.lines().collect(Collectors.joining());
         }catch (IOException exception){
             exception.printStackTrace();
@@ -98,6 +103,11 @@ public class CustomerServiceImpl implements CustomerService{
         log.info("before update->{}", updatedCustomer);
 
         return String.format("%s Details updated successfully", updatedCustomer.getFirstName());
+    }
+
+    @Override
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 
     private void applyAddressUpdate(Address address, UpdateCustomerDetails updateCustomerDetails) {
