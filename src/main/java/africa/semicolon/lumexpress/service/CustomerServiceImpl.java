@@ -9,6 +9,7 @@ import africa.semicolon.lumexpress.data.models.Cart;
 import africa.semicolon.lumexpress.data.models.Customer;
 import africa.semicolon.lumexpress.data.models.VerificationToken;
 import africa.semicolon.lumexpress.data.repository.CustomerRepository;
+import africa.semicolon.lumexpress.exception.LumExpressException;
 import africa.semicolon.lumexpress.exception.UserNotFoundException;
 import africa.semicolon.lumexpress.service.notification.EmailNotificationService;
 import lombok.AllArgsConstructor;
@@ -38,7 +39,11 @@ public class CustomerServiceImpl implements CustomerService{
     private final VerificationTokenService verificationTokenService;
 
     @Override
-    public RegisterResponse register(CustomerRegisterRequest customerRegisterRequest) {
+    public RegisterResponse register(CustomerRegisterRequest customerRegisterRequest) throws LumExpressException {
+        Optional<Customer> foundCustomer = customerRepository.findByEmail(customerRegisterRequest.getEmail());
+        if(foundCustomer.isPresent()){
+            throw new LumExpressException(String.format("Email %s has already been used", customerRegisterRequest.getEmail()));
+        }
         Customer customer = mapper.map(customerRegisterRequest, Customer.class);
         customer.setCart(new Cart());
         setCustomerAddress(customerRegisterRequest, customer);

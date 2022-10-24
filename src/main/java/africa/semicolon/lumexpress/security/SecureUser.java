@@ -42,8 +42,13 @@ public class SecureUser implements UserDetails {
     }
 
     @Override
+    public boolean isEnabled() {
+        return lumExpressUser.isEnabled();
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
@@ -56,8 +61,5 @@ public class SecureUser implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+
 }
